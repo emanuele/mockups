@@ -27,11 +27,11 @@ if __name__ == '__main__':
         print("Parent: waiting some seconds.")
         sleep(4)
         print("Parent: retriving data from child process.")
-        try:
+        if not q.empty:
             t_child = q.get(block=False)
-            print("Parent: child pressed key in %ssec." % t_child)
-        except:
+        else:
             print("Parent: Child did not press a key.")
+
         print("Parent: terminating child process.")
         p.terminate()
         print("")
