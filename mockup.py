@@ -14,7 +14,7 @@ def child(q, inp, t0):
 
 
 if __name__ == '__main__':
-    inp = os.fdopen(os.dup(sys.stdin.fileno()))
+    inp = os.fdopen(os.dup(sys.stdin.fileno())) # Maybe this does not work on win32
 
     for i in range(10):
         print("Parent: iteration %d" % i)
