@@ -1,7 +1,7 @@
 """Serial logger with timings.
 """
 
-def serial_logger(q, t0, ser, good=[1,2], bad=[5], time, total_time=1000.0):
+def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=1000.0, verbose=False):
     """Serial logger with timings.
 
     q: multiprocessing.Queue to communicate with parent process
@@ -13,21 +13,23 @@ def serial_logger(q, t0, ser, good=[1,2], bad=[5], time, total_time=1000.0):
     total_time : in milliseconds
     """
 
-    timeout = total_time / 1000.0
+    timeout = total_time
 
     while True:
-        ser.timeout = timeout
+        if timeout < 0: break
+        ser.timeout = timeout / 1000.0 # serial port wants seconds
         inp = ser.read(1)
+        if verbose: print("Child: serial read %s" % inp)
         if inp in bad:
-            timeout = (total_time - (time() - t0)) / 1000.0 # in sec.
+            timeout = (total_time - (time() - t0))
             continue
         elif inp in good:
-            t = time()
-            print("Child: %s arrived from serial after %s" % (inp, t))
+            t = time() - t0
+            if verbose: print("Child: %s arrived from serial after %s" % (inp, t))
             q.put((inp, t), block=True, timeout=None)
             break
         elif inp == '':
-            t = time()
+            t = time() - t0
             print("Child timeout: nothing arrived from serial after %s" % t)
             q.put(('timeout', t), block=True, timeout=None)
             break
