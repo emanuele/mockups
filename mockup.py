@@ -9,8 +9,9 @@ def child(q, inp, t0):
     delta_t = time() - t0
     print("Child: key pressed after %ssec." % delta_t)
     print("Child: sending delta_t=%s." % delta_t)
-    q.put(delta_t)
+    q.put(delta_t, block=True, timeout=None)
     print("Child: sent.")
+    q.close()
 
 
 if __name__ == '__main__':
@@ -27,13 +28,18 @@ if __name__ == '__main__':
         print("Parent: waiting some seconds.")
         sleep(4)
         print("Parent: retriving data from child process.")
-        if not q.empty:
+        if not q.empty():
             t_child = q.get(block=False)
+            print("Parent: Child returned %s" % t_child)
         else:
             print("Parent: Child did not press a key.")
 
-        print("Parent: terminating child process.")
-        p.terminate()
+        q.close()
+        if p.is_alive():
+            print("Parent: terminating child process.")
+            p.terminate()
+
+        print("Parent: child process terminated.")
         print("")
         print("")
 
