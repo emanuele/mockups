@@ -16,7 +16,6 @@ def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=1000.0, verb
     timeout = total_time
 
     while True:
-        if timeout < 0: break
         ser.timeout = timeout / 1000.0 # serial port wants seconds
         inp = ser.read(1)
         if verbose: print("Child: serial read %s" % inp)
