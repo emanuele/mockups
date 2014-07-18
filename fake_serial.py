@@ -10,6 +10,9 @@ class MySerial(object):
 
     def read(self, n_bytes):
         assert(n_bytes==1)
+        if self.timeout < 0.0:
+            return ''
+
         if self.verbose: print("MySerial: timeout = %s" % self.timeout)
         sleep(random() * self.timeout)
         return choice(self.values)
