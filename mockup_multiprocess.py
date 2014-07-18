@@ -23,6 +23,7 @@ if __name__ == '__main__':
         q = Queue()
         t0 = time()
         p = Process(target=child, args=(q, inp, t0))
+        p.daemon = True
         print("Parent: Starting Child process.")
         p.start()
         print("Parent: waiting some seconds.")
