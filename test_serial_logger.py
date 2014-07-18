@@ -9,7 +9,7 @@ def mytime():
 
 if __name__ == '__main__':
 
-    ser = MySerial(values=[1,2,5,5,5,5,5,5,5,5], timeout=3.0, seed=1, verbose=False)
+    ser = MySerial(values=[1,2,5,5,5,5,5,5,5,5], timeout=2.0, seed=1, verbose=True)
     ser.open()
 
     for i in range(10):
@@ -19,9 +19,9 @@ if __name__ == '__main__':
         t0 = mytime()
         p = Process(target=serial_logger, args=(q, t0, ser, mytime, [1,2], [5], 1000.0, True))
         p.daemon = True
-        # print("Parent: Starting Child process.")
+        print("Parent: Starting Child process.")
         p.start()
-        # print("Parent: waiting some seconds.")
+        print("Parent: waiting some seconds.")
         sleep(4)
         print("Parent: retriving data from child process.")
         if not q.empty():
