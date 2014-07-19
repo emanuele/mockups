@@ -4,11 +4,16 @@ import time
 from serial_logger import serial_logger
 from fake_serial import Serial
 from time import sleep
+import sys
+
 
 def mytime():
     return time.time() * 1000.0
 
 if __name__ == '__main__':
+
+    f = open('log.txt', 'w')
+    sys.stdout = f
 
     ser = Serial(values=[1,2,5,5,5,5,5,5,5,5], timeout=2.0, seed=1, verbose=True)
     ser.open()
