@@ -1,7 +1,7 @@
 """Serial logger with timings.
 """
 
-def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=1000.0, verbose=False):
+def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=1000.0, verbose=False, close_queue=True):
     """Serial logger with timings.
 
     q: multiprocessing.Queue to communicate with parent process
@@ -36,5 +36,5 @@ def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=1000.0, verb
             # Something wrong happened.
             raise Exception
 
-    q.close()
+    if close_queue: q.close()
     
