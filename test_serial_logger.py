@@ -1,7 +1,7 @@
 from multiprocessing import Process, Queue
 import time
 from serial_logger import serial_logger
-from fake_serial import MySerial
+from fake_serial import Serial
 from time import sleep
 
 def mytime():
@@ -9,7 +9,7 @@ def mytime():
 
 if __name__ == '__main__':
 
-    ser = MySerial(values=[1,2,5,5,5,5,5,5,5,5], timeout=2.0, seed=1, verbose=True)
+    ser = Serial(values=[1,2,5,5,5,5,5,5,5,5], timeout=2.0, seed=1, verbose=True)
     ser.open()
 
     for i in range(10):

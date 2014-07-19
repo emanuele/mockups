@@ -1,8 +1,8 @@
 from time import sleep
 from random import random, choice, seed
 
-class MySerial(object):
-    def __init__(self, values, timeout=2.0, seed=0, verbose=False):
+class Serial(object):
+    def __init__(self, values, timeout=2.0, seed=0, verbose=False, *args, **kwargs):
         self.values = values
         self.timeout = 2.0
         seed = 0
@@ -19,3 +19,6 @@ class MySerial(object):
 
     def open(self):
         return 0
+
+    def flushInput(self):
+        return
