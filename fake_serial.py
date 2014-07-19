@@ -2,16 +2,23 @@ from time import sleep
 from random import random, choice, seed
 
 class Serial(object):
-    def __init__(self, values, timeout=2.0, seed=0, verbose=False, *args, **kwargs):
+    def __init__(self, values, start=[], timeout=2.0, seed=0, verbose=False, *args, **kwargs):
         self.values = values
         self.timeout = 2.0
         seed = 0
         self.verbose = verbose
+        self.start = start
+        self.counter = 0
 
     def read(self, n_bytes):
         assert(n_bytes==1)
         if self.timeout < 0.0:
             return ''
+
+        self.counter += 1
+        if self.counter < len(self.start):
+            if verbose: print("MySerial: popping starting triggers.")
+            return self.start[counter]
 
         if self.verbose: print("MySerial: timeout = %s" % self.timeout)
         sleep(random() * self.timeout)
