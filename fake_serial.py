@@ -5,7 +5,7 @@ from random import random, choice, seed
 class Serial(object):
     def __init__(self, values, start=[], timeout=2.0, seed=0, verbose=False, *args, **kwargs):
         self.values = values
-        self.timeout = 2.0
+        self.timeout = timeout
         seed = 0
         self.verbose = verbose
         self.start = start
@@ -21,7 +21,7 @@ class Serial(object):
             if verbose: print("Serial: popping starting triggers.")
             return self.start[counter]
 
-        if self.verbose: print("MySerial: timeout = %s" % self.timeout)
+        if self.verbose: print("Serial: timeout = %s" % self.timeout)
         sleep(random() * self.timeout)
         return choice(self.values)
 
