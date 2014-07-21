@@ -1,7 +1,7 @@
 """Serial logger with timings.
 """
 
-def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=1000.0, verbose=False, close_queue=True):
+def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=2000.0, verbose=False, close_queue=True):
     """Serial logger with timings.
 
     q: multiprocessing.Queue to communicate with parent process
@@ -33,7 +33,7 @@ def serial_logger(q, t0, ser, time, good=[1,2], bad=[5], total_time=1000.0, verb
             q.put(('timeout', t), block=True, timeout=None)
             break
         else:
-            # Something wrong happened.
+            print("Child: Something wrong happened.")
             raise Exception
 
     if close_queue: q.close()
