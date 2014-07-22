@@ -28,3 +28,4 @@ def serial_timer(q_in, q_out, t0, ser, time, good=[1,2], bad=[5], total_time=200
                 print("Child: Something wrong happened.")
                 raise Exception
     
+    print("Child: child thread terminating.")
