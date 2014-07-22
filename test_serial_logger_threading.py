@@ -12,8 +12,8 @@ def mytime():
 
 if __name__ == '__main__':
 
-    f = open('log.txt', 'w')
-    sys.stdout = f
+    # f = open('log.txt', 'w')
+    # sys.stdout = f
 
     ser = Serial(values=[1,2,5,5,5,5,5,5,5,5], timeout=2.0, seed=1, verbose=True)
     ser.open()
