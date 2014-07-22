@@ -37,8 +37,8 @@ if __name__ == '__main__':
             print("Parent: Child did return values.")
 
         if t.is_alive():
-            print("Parent: terminating child thread.")
-            t.terminate()
+            print("Parent: unexpectedly child thread is alive.")
+            raise Exception
 
         print("Parent: child thread terminated.")
         print("")
