@@ -15,14 +15,14 @@ if __name__ == '__main__':
     # f = open('log.txt', 'w')
     # sys.stdout = f
 
-    ser = Serial(values=[5,5,5,5,5,5,5,5], timeout=2.0, seed=1, verbose=True)
+    ser = Serial(values=['1','2','5','5','5','5','5','5','5','5'], timeout=2.0, seed=1, verbose=True)
     ser.open()
 
     print("Parent: Creating Queue and child Thread.")
     q_in = Queue()
     q_out = Queue()
     t0 = mytime()
-    t = Thread(target=serial_timer, args=(q_in, q_out, t0, ser, mytime, [1,2], [5], 1000.0, True))
+    t = Thread(target=serial_timer, args=(q_in, q_out, t0, ser, mytime, ['1','2'], ['5'], 2000.0, True))
     t.daemon = True
     print("Parent: Starting Child thread.")
     t.start()
