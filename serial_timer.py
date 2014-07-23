@@ -1,6 +1,10 @@
-def serial_timer(q_in, q_out, t0, ser, time, good=[1,2], bad=[5], total_time=2000.0, verbose=False):
+from Queue import Queue
+from threading import Thread
+
+
+def serial_timer(q_in, q_out, t0, ser, time, good=['1','2'], bad=['5'], total_time=2000.0, verbose=False):
     delta_t = time() - t0
-    print("Child: started after %sms" % delta_t)
+    if verbose: print("Child: started after %sms" % delta_t)
     while True:
         t0 = q_in.get(block=True, timeout=None)
         if t0 == 'stop':
@@ -21,7 +25,7 @@ def serial_timer(q_in, q_out, t0, ser, time, good=[1,2], bad=[5], total_time=200
                 break
             elif inp == '':
                 t = time() - t0
-                print("Child timeout: nothing arrived from serial after %s" % t)
+                if verbose: print("Child timeout: nothing arrived from serial after %s" % t)
                 q_out.put(('timeout', t), block=True, timeout=None)
                 break
             else:
@@ -29,3 +33,61 @@ def serial_timer(q_in, q_out, t0, ser, time, good=[1,2], bad=[5], total_time=200
                 raise Exception
     
     print("Child: child thread terminating.")
+
+
+class SerialTimer(object):
+    """This class provides a timer for the serial port.
+    """
+
+    def __init__(self, t0, ser, time, good=['1','2'], bad=['5'], total_time=2000.0, flush=True, verbose=False):
+        self.t0 = t0
+        self.ser = ser
+        self.time = time
+        self.good = good
+        self.bad = bad
+        self.total_time = total_time
+        self.flush = flush
+        self.verbose = verbose
+
+        self.q_in = Queue()
+        self.q_out = Queue()
+        self.t = Thread(target=serial_timer, args=(self.q_in, self.q_out, self.t0, self.ser, self.time, self.good, self.bad, self.total_time, self.verbose))
+        self.t.daemon = True
+        if self.verbose: print("SerialTimer: Starting child thread.")
+        self.t.start()
+
+
+    def start_timer(self, start_time=None):
+        """Start measuring elapsed time.
+        """
+        if start_time is None:
+            start_time = self.time()
+
+        self.start_time = start_time
+        self.q_in.put(self.start_time)
+        if self.verbose: print("SerialTimer: timer started.")
+        return self.start_time
+
+
+    def get_timing(self):
+        """Get measured timing, if available.
+        """
+        if self.verbose: print("SerialTimer: retriving data from child thread.")
+        if not self.q_out.empty():
+            inp, t_child = self.q_out.get(block=False)
+            if self.verbose: print("SerialTimer: child returned %s and %s" % (inp, t_child))
+        else:
+            inp = None
+            t_child = self.total_time
+            if self.verbose: print("SerialTimer: child did return values.")
+
+        if self.flush: self.ser.flushInput()
+        return inp, t_child
+
+
+    def stop(self):
+        """Stop child process.
+        """
+        if self.verbose: print("SerialTimer: stopping child process.")
+        self.q_in.put('stop')
+        self.t.join()
