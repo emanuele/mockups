@@ -11,7 +11,7 @@ def mytime():
 
 if __name__ == '__main__':
 
-    verbose = False
+    verbose = True
     
     # f = open('log.txt', 'w')
     # sys.stdout = f
