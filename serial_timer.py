@@ -1,3 +1,12 @@
+"""This is the serial_timer module which provides a low-level function
+for measuring timings of triggers coming from the serial port. A
+convenience class is available as well to mask low-level details to
+the user.
+
+Copyright (c) 2014, Emanuele Olivetti
+Distributed under the BSD 3-clause license.
+"""
+
 from Queue import Queue
 from threading import Thread
 
