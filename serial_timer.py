@@ -60,6 +60,10 @@ class SerialTimer(object):
     def start_timer(self, start_time=None):
         """Start measuring elapsed time.
         """
+        if not self.t.is_alive():
+            print("ERROR: Thread is not running!")
+            raise Exception
+
         if start_time is None:
             start_time = self.time()
 
@@ -72,6 +76,10 @@ class SerialTimer(object):
     def get_timing(self):
         """Get measured timing, if available.
         """
+        if not self.t.is_alive():
+            print("ERROR: Thread is not running!")
+            raise Exception
+
         if self.verbose: print("SerialTimer: retriving data from child thread.")
         if not self.q_out.empty():
             inp, t_child = self.q_out.get(block=False)
