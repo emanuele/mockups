@@ -22,6 +22,9 @@ if __name__ == '__main__':
     print("Parent: Creating SerialTimer.")
     st = SerialTimer(t0=mytime(), ser=ser, time=mytime, good=['1','2'], bad=['5'], total_time=2000.0, flush=True, verbose=verbose)
 
+    print("Condition 1")
+    print("")
+
     for i in range(10):
         print("Parent: iteration %d" % i)
         st.start_timer()
@@ -30,6 +33,21 @@ if __name__ == '__main__':
         key, elapsed_time = st.get_timing()
         print("Key pressed: %s , after %sms." % (key, elapsed_time))
         print("")
+
+    time.sleep(2)
+
+    print("Condition 2")
+    print("")
+
+    for i in range(10):
+        print("Parent: iteration %d" % i)
+        st.start_timer()
+        print("Parent: waiting some seconds.")
+        sleep(4)
+        key, elapsed_time = st.get_timing()
+        print("Key pressed: %s , after %sms." % (key, elapsed_time))
+        print("")
+
     
     st.stop()
     
