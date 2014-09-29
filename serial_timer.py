@@ -79,7 +79,7 @@ class SerialTimer(object):
         else:
             inp = None
             t_child = self.total_time
-            if self.verbose: print("SerialTimer: child did return values.")
+            if self.verbose: print("SerialTimer: child did not return values.")
 
         if self.flush: self.ser.flushInput()
         return inp, t_child
